@@ -16,7 +16,7 @@ const { JWT_SECRET, SALT } = require('../utils/constants');
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
-  return User.findByCredentials(email, password)
+  return User.findUserByCredentials(email, password)
     .then((user) => {
       const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
       res.send({ token });
