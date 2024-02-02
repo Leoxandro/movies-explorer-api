@@ -11,14 +11,14 @@ const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
 } = require('../constants/constants');
-const { JWT_SECRET, SALT } = require('../constants/constants');
+const { JWT_SECRET, SALT, NODE_ENV } = require('../constants/constants');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev_key', { expiresIn: '7d' });
       res.send({ token });
     })
     .catch(() => next(new UnauthorizedError('Incorrect email or password')));
@@ -43,7 +43,7 @@ const createUser = (req, res, next) => {
       res.status(HTTP_STATUS_CREATED).send({ data: userWithoutPassword });
     })
     .catch((err) => {
-      if (err.name === 'MongoServerError') {
+      if (err.code === 11000) {
         return next(new ConflictError('User with same name already exists'));
       } if (err.name === 'ValidationError') {
         const errorMessage = Object.values(err.errors)

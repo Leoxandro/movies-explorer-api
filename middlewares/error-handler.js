@@ -5,8 +5,8 @@ const {
 // eslint-disable-next-line
 const errorHandler = (err, _, res, next) => {
   const statusCode = err.statusCode || INTERNAL_SERVER_ERROR;
-  const message = err.message || 'Internal Server Error';
-  res.status(statusCode).json({ error: message });
+  const errMessage = err.message || 'Internal Server Error';
+  res.status(statusCode).json({ message: errMessage });
 };
 
 module.exports = {
