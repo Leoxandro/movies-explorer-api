@@ -1,4 +1,4 @@
-const { HTTP_STATUS_UNAUTHORIZED } = require('./constants');
+const { HTTP_STATUS_UNAUTHORIZED } = require('../constants/constants');
 
 class UnauthorizedError extends Error {
   constructor(message) {

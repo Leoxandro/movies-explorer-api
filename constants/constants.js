@@ -3,7 +3,7 @@ const {
   JWT_SECRET = 'dev_key',
   SALT = 10,
   PORT = 3001,
-  MONGODB = 'mongodb://127.0.0.1:27017/moviesdb',
+  MONGODB = 'mongodb://127.0.0.1:27017/bitfilmsdb',
 } = process.env;
 
 module.exports = {

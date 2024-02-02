@@ -10,8 +10,8 @@ const {
 const {
   HTTP_STATUS_OK,
   HTTP_STATUS_CREATED,
-} = require('../utils/constants');
-const { JWT_SECRET, SALT } = require('../utils/constants');
+} = require('../constants/constants');
+const { JWT_SECRET, SALT } = require('../constants/constants');
 
 const login = (req, res, next) => {
   const { email, password } = req.body;

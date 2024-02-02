@@ -7,7 +7,7 @@ const {
 const {
   HTTP_STATUS_CREATED,
   HTTP_STATUS_OK,
-} = require('../utils/constants');
+} = require('../constants/constants');
 
 const getSavedMovies = (req, res, next) => {
   const owner = req.user._id;

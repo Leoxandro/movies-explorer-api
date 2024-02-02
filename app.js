@@ -2,17 +2,14 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 const { errors } = require('celebrate');
 const cors = require('./middlewares/cors');
-const userRoutes = require('./routes/users');
-const movieRoutes = require('./routes/movies');
-const { createUser, login } = require('./controllers/users');
-const { signInSchema, signUpSchema } = require('./middlewares/validation');
-const auth = require('./middlewares/auth');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorHandler } = require('./middlewares/error-handler');
-const { NotFoundError } = require('./utils');
-const { PORT, MONGODB } = require('./utils/constants');
+const router = require('./routes/index');
+const limiter = require('./helpers/limiter');
+const { PORT, MONGODB } = require('./constants/constants');
 
 mongoose
   .connect(MONGODB)
@@ -26,6 +23,7 @@ app.use(cors);
 app.use(express.json());
 
 app.use(requestLogger);
+app.use(helmet());
 
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -33,17 +31,11 @@ app.get('/crash-test', () => {
   }, 0);
 });
 
-app.post('/signin', signInSchema, login);
-app.post('/signup', signUpSchema, createUser);
-app.use(auth);
-app.use('/users', userRoutes);
-app.use('/movies', movieRoutes);
+app.use(router);
+
+app.use(limiter);
 
 app.use(errorLogger);
-
-app.use('*', (req, res, next) => {
-  next(new NotFoundError('Requested resource was not found'));
-});
 
 app.use(errors());
 app.use(errorHandler);

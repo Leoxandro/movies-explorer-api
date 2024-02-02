@@ -1,6 +1,6 @@
 const {
   INTERNAL_SERVER_ERROR,
-} = require('../utils/constants');
+} = require('../constants/constants');
 
 // eslint-disable-next-line
 const errorHandler = (err, _, res, next) => {
