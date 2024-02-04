@@ -92,7 +92,9 @@ const updateUser = (req, res, next) => {
       return res.status(HTTP_STATUS_OK).send({ data: user });
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.code === 11000) {
+        return next(new ConflictError('User with same name already exists'));
+      } if (err.name === 'ValidationError') {
         return next(new BadRequestError('Provided info is incorrect'));
       }
       return next(err);
