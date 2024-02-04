@@ -1,6 +1,6 @@
 const {
-  NODE_ENV = 'dev',
-  JWT_SECRET = 'dev_key',
+  NODE_ENV,
+  JWT_SECRET,
   SALT = 10,
   PORT = 3001,
   MONGODB = 'mongodb://127.0.0.1:27017/bitfilmsdb',
