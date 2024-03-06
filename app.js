@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
-const cors = require('./middlewares/cors');
+const cors = require('cors');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { errorHandler } = require('./middlewares/error-handler');
 const router = require('./routes/index');
@@ -18,7 +18,25 @@ mongoose
 
 const app = express();
 
-app.use(cors());
+const options = {
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://karpov.nomoredomainswork.ru',
+    'http://karpov.nomoredomainswork.ru',
+    'https://api.karpov.nomoredomainswork.ru',
+    'http://api.karpov.nomoredomainswork.ru',
+    '127.0.0.1:27017/mestodb',
+    'mongodb://127.0.0.1:27017/mestodb',
+  ],
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ['Content-Type', 'origin', 'Authorization'],
+  credentials: true,
+};
+
+app.use(cors(options));
 
 app.use(express.json());
 
